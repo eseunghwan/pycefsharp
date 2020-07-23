@@ -52,5 +52,9 @@ pycefsharp is MIT license
 
 - V 0.2.1.Rev2 [2020/07/23]
     - bug fixed
-        - find install dependencies correctly
+        - find install dependencies properly
     - add <b>show</b>, <b>close</b> functions
+
+- V 0.2.1.Rev3 [2020/07/23]
+    - bug fixed
+        - window moves to center when geometry's x and y are -1 properly

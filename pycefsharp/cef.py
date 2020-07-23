@@ -18,6 +18,8 @@ class CefSettings(Cef_Forms.CefSettings):
 class CefView():
     def __init__(self, url:str, title:str = "pycefsharp", icon:str = None, geometry:list = [-1, -1, -1, -1]):
         self.__cef_form = WinForms.Form()
+        self.__cef_form.StartPosition = WinForms.FormStartPosition.CenterScreen
+
         self.__cef_browser = None
 
         self.url = url
@@ -70,15 +72,15 @@ class CefView():
 
     @geometry.setter
     def geometry(self, new_geometry:list):
-        if new_geometry[0] == -1 or new_geometry[1] == -1:
-            self.__cef_form.StartPosition = WinForms.FormStartPosition.CenterScreen
-        else:
-            self.__cef_form.Location = Point(new_geometry[0], new_geometry[1])
-
         self.__cef_form.Size = Size(
-            600 if new_geometry[2] == -1 else new_geometry[2],
-            400 if new_geometry[3] == -1 else new_geometry[3]
+            600 if new_geometry[2] == -1 else int(new_geometry[2]),
+            400 if new_geometry[3] == -1 else int(new_geometry[3])
         )
+
+        if new_geometry[0] == -1 or new_geometry[1] == -1:
+            self.__to_center_screen()
+        else:
+            self.__cef_form.Location = Point(int(new_geometry[0]), int(new_geometry[1]))
 
     # events
     def __on_load(self, sender, ev):
@@ -104,6 +106,12 @@ class CefView():
         pass
 
     # functions
+    def __to_center_screen(self):
+        self.__cef_form.Location = Point(
+            int((WinForms.Screen.PrimaryScreen.Bounds.Size.Width - self.__cef_form.Size.Width) / 2),
+            int((WinForms.Screen.PrimaryScreen.Bounds.Size.Height - self.__cef_form.Size.Height) / 2)
+        )
+
     def show(self):
         self.__cef_form.Show()
 
