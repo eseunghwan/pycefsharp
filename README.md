@@ -39,3 +39,6 @@ pycefsharp is MIT license
 # Release History
 - V 0.1.0 [2020/07/23]
     - initial version
+
+- V 0.2.0 [2020/07/23]
+    - add properties of <b>url</b>, <b>title</b>, <b>icon</b>, <b>geometry</b>

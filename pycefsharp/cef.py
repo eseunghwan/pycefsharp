@@ -16,34 +16,58 @@ class CefSettings(Cef_Forms.CefSettings):
         super().__init__()
 
 class CefView(WinForms.Form):
-    def __init__(self, url:str, title:str = "pycefsharp", icon:str = None, geometry:tuple = (-1, -1, -1, -1)):
+    def __init__(self, url:str, title:str = "pycefsharp", icon:str = None, geometry:list = [-1, -1, -1, -1]):
         super().__init__()
 
         self.__url = url
+        self.__icon = os.path.join(__path__[0], "cef.ico") if icon == None else icon
 
-        if icon == None:
-            icon = os.path.join(__path__[0], "cef.ico")
-
-        self.Icon = Icon(icon)
+        self.Icon = Icon(self.__icon)
         self.Text = title
-
-        if not geometry[0] == -1 or not geometry[1] == -1:
-            self.Location = Point(geometry[0], geometry[1])
-        else:
-            self.StartPosition = WinForms.FormStartPosition.CenterScreen
-
-        if not geometry[2] == -1 or not geometry[3] == -1:
-            self.Size = Size(geometry[2], geometry[3])
+        self.geometry = geometry
 
         self.Load += self.__OnLoad
         self.Shown += self.__OnShow
         self.FormClosed += self.__OnClose
 
+    @property
+    def url(self) -> str:
+        return self.__url
+
+    @url.setter
+    def url(self, new_url:str):
+        self.__url = new_url
+        self.__cef_browser_form.Load(self.__url)
+
+    @property
+    def icon(self) -> str:
+        return self.__icon
+
+    @property
+    def title(self) -> str:
+        return self.Text
+
+    @property
+    def geometry(self) -> list:
+        return [
+            self.Location.X, self.Location.Y,
+            self.Size.Width, self.Size.Height
+        ]
+
+    @geometry.setter
+    def geometry(self, new_geometry:list):
+        if not new_geometry[0] == -1 or not new_geometry[1] == -1:
+            self.Location = Point(new_geometry[0], new_geometry[1])
+        else:
+            self.StartPosition = WinForms.FormStartPosition.CenterScreen
+
+        if not new_geometry[2] == -1 or not new_geometry[3] == -1:
+            self.Size = Size(new_geometry[2], new_geometry[3])
+
     def __OnLoad(self, sender, ev):
-        logging.info(self.__url)
-        view = Cef_Forms.ChromiumWebBrowser(self.__url)
-        view.Dock = WinForms.DockStyle.Fill
-        self.Controls.Add(view)
+        self.__cef_browser_form = Cef_Forms.ChromiumWebBrowser(self.__url)
+        self.__cef_browser_form.Dock = WinForms.DockStyle.Fill
+        self.Controls.Add(self.__cef_browser_form)
 
         self.OnLoad(sender, ev)
 
