@@ -29,6 +29,7 @@ class CefView():
         self.__cef_form.Shown += self.__on_show
         self.__cef_form.FormClosed += self.__on_close
 
+    # attributes
     @property
     def _cef_form(self) -> WinForms.Form:
         return self.__cef_form
@@ -79,6 +80,7 @@ class CefView():
             400 if new_geometry[3] == -1 else new_geometry[3]
         )
 
+    # events
     def __on_load(self, sender, ev):
         self.__cef_browser = Cef_Forms.ChromiumWebBrowser(self.__url)
         self.__cef_browser.Dock = WinForms.DockStyle.Fill
@@ -100,6 +102,13 @@ class CefView():
 
     def on_close(self):
         pass
+
+    # functions
+    def show(self):
+        self.__cef_form.Show()
+
+    def close(self):
+        self.__cef_form.Close()
 
 class CefApp():
     def __init__(self, settings:CefSettings = CefSettings()):
