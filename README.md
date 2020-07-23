@@ -13,12 +13,8 @@
 ```powershell
 pip install pycefsharp
 ```
-### from git
-```powershell
-git clone https://github.com/eseunghwan/pycefsharp.git
-cd pycefsharp
-python setup.py install
-```
+<br>
+<br>
 
 # Usage
 ### open url from cli
