@@ -31,6 +31,8 @@ class CefView():
         self.__cef_form.Shown += self.__on_show
         self.__cef_form.FormClosed += self.__on_close
 
+        self.__cef_form.Visible = False
+
     # attributes
     @property
     def _cef_form(self) -> WinForms.Form:
@@ -83,8 +85,13 @@ class CefView():
             self.__cef_form.Location = Point(int(new_geometry[0]), int(new_geometry[1]))
 
     # events
+    def __cef_loaded(self, sender, ev):
+        self.__cef_form.Visible = True
+
     def __on_load(self, sender, ev):
         self.__cef_browser = Cef_Forms.ChromiumWebBrowser(self.__url)
+        self.__cef_browser.FrameLoadEnd += self.__cef_loaded
+
         self.__cef_browser.Dock = WinForms.DockStyle.Fill
         self.__cef_form.Controls.Add(self.__cef_browser)
 

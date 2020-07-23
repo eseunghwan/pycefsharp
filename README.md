@@ -58,3 +58,6 @@ pycefsharp is MIT license
 - V 0.2.1.Rev3 [2020/07/23]
     - bug fixed
         - window moves to center when geometry's x and y are -1 properly
+
+- V 0.2.1.Rev4 [2020/07/23]
+    - window appears when page is loaded
