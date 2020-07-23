@@ -48,4 +48,6 @@ pycefsharp is MIT license
     - form can be invoked by properties
 
 - V 0.2.1 [2020/07/23]
+    - bug fixed
+        - find install dependencies correctly
     - add <b>show</b>, <b>close</b> functions
