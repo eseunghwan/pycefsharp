@@ -19,7 +19,7 @@ setup(
     ],
     description="python binding for CefSharp",
     entry_points={"console_scripts": ["pycefsharp=pycefsharp.cli:main",],},
-    install_requires=open("requirements.txt", "r", encoding = "utf-8").read(),
+    install_requires=open("requirements.txt", "r", encoding = "utf-8").readlines(),
     license="MIT license",
     long_description=readme,
     long_description_content_type="text/markdown",
