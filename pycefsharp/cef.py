@@ -15,20 +15,23 @@ class CefSettings(Cef_Forms.CefSettings):
     def __init__(self):
         super().__init__()
 
-class CefView(WinForms.Form):
+class CefView():
     def __init__(self, url:str, title:str = "pycefsharp", icon:str = None, geometry:list = [-1, -1, -1, -1]):
-        super().__init__()
+        self.__cef_form = WinForms.Form()
+        self.__cef_browser = None
 
-        self.__url = url
-        self.__icon = os.path.join(__path__[0], "cef.ico") if icon == None else icon
-
-        self.Icon = Icon(self.__icon)
-        self.Text = title
+        self.url = url
+        self.title = title
+        self.icon = os.path.join(__path__[0], "cef.ico") if icon == None else icon
         self.geometry = geometry
 
-        self.Load += self.__OnLoad
-        self.Shown += self.__OnShow
-        self.FormClosed += self.__OnClose
+        self.__cef_form.Load += self.__on_load
+        self.__cef_form.Shown += self.__on_show
+        self.__cef_form.FormClosed += self.__on_close
+
+    @property
+    def _cef_form(self) -> WinForms.Form:
+        return self.__cef_form
 
     @property
     def url(self) -> str:
@@ -37,53 +40,65 @@ class CefView(WinForms.Form):
     @url.setter
     def url(self, new_url:str):
         self.__url = new_url
-        self.__cef_browser_form.Load(self.__url)
+        if not self.__cef_browser == None:
+            self.__cef_browser.Load(self.__url)
 
     @property
     def icon(self) -> str:
         return self.__icon
 
+    @icon.setter
+    def icon(self, new_icon:str):
+        self.__icon = new_icon
+        self.__cef_form.Icon = Icon(self.__icon)
+
     @property
     def title(self) -> str:
-        return self.Text
+        return self.__cef_form.Text
+    
+    @title.setter
+    def title(self, new_title:str):
+        self.__cef_form.Text = new_title
 
     @property
     def geometry(self) -> list:
         return [
-            self.Location.X, self.Location.Y,
-            self.Size.Width, self.Size.Height
+            self.__cef_form.Location.X, self.__cef_form.Location.Y,
+            self.__cef_form.Size.Width, self.__cef_form.Size.Height
         ]
 
     @geometry.setter
     def geometry(self, new_geometry:list):
-        if not new_geometry[0] == -1 or not new_geometry[1] == -1:
-            self.Location = Point(new_geometry[0], new_geometry[1])
+        if new_geometry[0] == -1 or new_geometry[1] == -1:
+            self.__cef_form.StartPosition = WinForms.FormStartPosition.CenterScreen
         else:
-            self.StartPosition = WinForms.FormStartPosition.CenterScreen
+            self.__cef_form.Location = Point(new_geometry[0], new_geometry[1])
 
-        if not new_geometry[2] == -1 or not new_geometry[3] == -1:
-            self.Size = Size(new_geometry[2], new_geometry[3])
+        self.__cef_form.Size = Size(
+            600 if new_geometry[2] == -1 else new_geometry[2],
+            400 if new_geometry[3] == -1 else new_geometry[3]
+        )
 
-    def __OnLoad(self, sender, ev):
-        self.__cef_browser_form = Cef_Forms.ChromiumWebBrowser(self.__url)
-        self.__cef_browser_form.Dock = WinForms.DockStyle.Fill
-        self.Controls.Add(self.__cef_browser_form)
+    def __on_load(self, sender, ev):
+        self.__cef_browser = Cef_Forms.ChromiumWebBrowser(self.__url)
+        self.__cef_browser.Dock = WinForms.DockStyle.Fill
+        self.__cef_form.Controls.Add(self.__cef_browser)
 
-        self.OnLoad(sender, ev)
+        self.on_load()
 
-    def OnLoad(self, sender, ev):
+    def on_load(self):
         pass
 
-    def __OnShow(self, sender, ev):
-        self.OnShow(sender, ev)
+    def __on_show(self, sender, ev):
+        self.on_show()
 
-    def OnShow(self, sender, ev):
+    def on_show(self):
         pass
 
-    def __OnClose(self, sender, ev):
-        self.OnClose(sender, ev)
+    def __on_close(self, sender, ev):
+        self.on_close()
 
-    def OnClose(self, sender, ev):
+    def on_close(self):
         pass
 
 class CefApp():
@@ -92,4 +107,4 @@ class CefApp():
         Cef.Initialize(settings)
 
     def Run(self, cefview:CefView):
-        WinForms.Application.Run(cefview)
+        WinForms.Application.Run(cefview._cef_form)

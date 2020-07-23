@@ -11,7 +11,8 @@ setup(
     author_email="shlee0920@naver.com",
     python_requires=">=3.7",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 3 - Alpha",
+        "Environment :: Win32 (MS Windows)",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",

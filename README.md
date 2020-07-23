@@ -42,3 +42,7 @@ pycefsharp is MIT license
 
 - V 0.2.0 [2020/07/23]
     - add properties of <b>url</b>, <b>title</b>, <b>icon</b>, <b>geometry</b>
+
+- V 0.2.1 [2020/07/23]
+    - make winform object private
+    - form can be invoked by properties

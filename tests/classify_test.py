@@ -5,15 +5,13 @@ class View(CefView):
     def __init__(self):
         super().__init__("https://github.com/eseunghwan/pycefsharp", "classify_test")
 
-        self.__views = []
-
-    def OnLoad(self, sender, ev):
+    def on_load(self):
         print("Loaded!")
 
-    def OnShow(self, sender, ev):
+    def on_show(self):
         print("Show!")
 
-    def OnClose(self, sender, ev):
+    def on_close(self):
         print("Closed!")
 
 CefApp().Run(View())
