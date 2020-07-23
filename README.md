@@ -47,7 +47,10 @@ pycefsharp is MIT license
     - make winform object private
     - form can be invoked by properties
 
-- V 0.2.1 [2020/07/23]
+- V 0.2.1.Rev2 [2020/07/23]
+    - revoked changes and upgrade to <b>0.2.1.Rev2</b>
+
+- V 0.2.1.Rev2 [2020/07/23]
     - bug fixed
         - find install dependencies correctly
     - add <b>show</b>, <b>close</b> functions
